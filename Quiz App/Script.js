@@ -14,9 +14,19 @@ finished - change the mouse to a pointer when the user hovers over questions or 
 //an array to hold all the questions
 var questions = [];
 var questionCounter = 0;
-var selectedAnswers = [];
+var selectedAnswers = localStorage;
 var correctAnswers = [1, 3, 2, 0, 2];
 var correctCounter = 0;
+
+localStorage.setItem("username", "IsaiahRocks1993");
+var username = localStorage.getItem("username");
+localStorage.removeItem("username");
+
+sessionStorage.setItem("username", "guy83w498");
+
+for (var i = 0; i < localStorage.length; i++) {
+    alert(localStorage.key(i))
+}
 
 var protoQuestion = {
     Author: "Kyle",
@@ -25,6 +35,34 @@ var protoQuestion = {
     }
 }
 
+var Question = function (questionText, ansOne, ansTwo, ansThree, ansFour) {
+    var Question = questionText;
+    var ans1 = ansOne;
+    var ans2 = ansTwo;
+    var ans3 = ansThree;
+    var ans4 = ansFour;
+
+    this["getQuestion"] = function () {
+        return Question + '!';
+    };
+    this["getAns1"] = function () {
+        return ans1 + '!';
+    };
+    this["getAns2"] = function () {
+        return ans2 + '!';
+    };
+    this["getAns3"] = function () {
+        return ans3 + '!';
+    };
+    this["getAns4"] = function () {
+        return ans4 + '!';
+    };
+};
+Question.prototype = protoQuestion;
+
+var q7 = new Question("What color is the sky at noon?", "Red", "Blue", "Green", "Yellow");
+
+var q6 = new Question("What's the best football team?", "Packers", "Texans", "Giants", "Eagles");
 
 //The possible questions to each question are given in an objects
 //correct answers at position 1, 3, 2, 0, 3
@@ -69,7 +107,7 @@ q5["ans3"] = "Through pain and suffering.";
 q5["ans4"] = "By playing flappy bird.";
 
 //add all the answers to an array
-questions.push(q1, q2, q3, q4, q5);
+questions.push(q1, q2, q3, q4, q5, q6, q7);
 
 //content wrapper begins hidden and is opened in the first function
 document.getElementById("contentWrapper").setAttribute("class", "hide");
@@ -96,10 +134,9 @@ var first = function () {
 var displayQuestion = function () {
     "use strict";
 
-    document.getElementById("question").innerHTML = questions[questionCounter]["Question"];
-
+    
     // for loop that loops through each question in an object and creates an li element with the question as the innerhtml
-
+    document.getElementById("question").innerHTML = questions[questionCounter]["Question"];
 
     document.getElementById("question").innerHTML += "<div>by "+ questions[questionCounter]["Author"] +" </div>";
 
@@ -115,7 +152,7 @@ var displayQuestion = function () {
     }
 
     //Add a progress bar
-    document.getElementById("question").innerHTML += "<progress id='progressBar' value='" + questionCounter + "' max='5'></progress>";
+    document.getElementById("question").innerHTML += "<progress id='progressBar' value='" + questionCounter + "' max='6'></progress>";
 
     //creates previous button and disables it until the user has reached the second question.
     document.getElementById("question").innerHTML += "<button id='previousButton' onclick=' backOne(); displayQuestion();'>Previous</button>";
@@ -187,7 +224,7 @@ var displayScore = function () {
             break;
     }
 
-    document.getElementById("question").innerHTML += "<button id='retakeButton' onclick='displayQuestion();'>Retake the quiz</button>";
+    document.getElementById("question").innerHTML += "<button id='retakeButton' onclick='displayQuestion(); localStorage.clear();'>Retake the quiz</button>";
     questionCounter = -1;
     selectedAnswers = [];
     correctCounter = 0;
